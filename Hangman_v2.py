@@ -9,7 +9,7 @@ class library():
     game_dictionary = pd.read_csv('hangmanV2.csv')
 
     def request_word():
-        df = library.game_dictionary.sample(random_state = random.randint(1,100)).values.tolist()
+        df = self.game_dictionary.sample(random_state = random.randint(1,100)).values.tolist()
         return df[0][0].lower(), df[0][1]
        
     def add_words():
@@ -28,11 +28,11 @@ class library():
         df = pd.DataFrame(data = words).T
         df.columns = ['word', 'clue']
 
-        library.game_dictionary = library.game_dictionary.append(df)
+        self.game_dictionary = self.game_dictionary.append(df)
 
         print("{} has been added to the Pandora's Box \n".format(df.loc[0, 'word']))
 
-        library.game_dictionary.to_csv('hangmanV2.csv', index = False)
+        self.game_dictionary.to_csv('hangmanV2.csv', index = False)
         HangmanMain.Menu()
 
 class HangmanGame():
@@ -42,7 +42,7 @@ class HangmanGame():
     def hangman_animation(still_guessing, guessed):
 
         if still_guessing:
-            if HangmanGame.lives == 0:
+            if self.lives == 0:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  | -\__(^^)__/-\n"
@@ -53,7 +53,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
                 
-            elif HangmanGame.lives == 1:
+            elif self.lives == 1:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  | -\__(^^)__/-\n"
@@ -64,7 +64,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
                 
-            elif HangmanGame.lives == 2:
+            elif self.lives == 2:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  | -\__(^^)__/-\n"
@@ -75,7 +75,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
                 
-            elif HangmanGame.lives == 3:
+            elif self.lives == 3:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  | -\__(^^)__/-\n"
@@ -86,7 +86,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
                 
-            elif HangmanGame.lives == 4:
+            elif self.lives == 4:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  | -\__(^^)    \n"
@@ -97,7 +97,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
                 
-            elif HangmanGame.lives == 5:
+            elif self.lives == 5:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  |     (^^)    \n"
@@ -108,7 +108,7 @@ class HangmanGame():
                       "  |             \n"
                       "__|__\n")
             
-            elif HangmanGame.lives == 6:
+            elif self.lives == 6:
                 print("   ___________  \n"
                       "  |      |      \n"
                       "  |             \n"
@@ -160,22 +160,22 @@ class HangmanGame():
 
         print('Clue: {} \n'.format(clue))
         print("Start guessing... \n")
-        HangmanGame.hangman_animation(still_guessing, guessed)
+        self.hangman_animation(still_guessing, guessed)
         print(word_state)
 
-        while not guessed and HangmanGame.lives > 0:
+        while not guessed and self.lives > 0:
             guess = input('> ').lower()
             if len(guess) == 1 and guess.isalpha():
                 if guess in guessed_letters:
                     print("You've already tried this letter. Your list of guessed letters include {} \n".format(guessed_letters))
 
                 elif guess not in guessword:
-                    HangmanGame.lives -= 1
-                    HangmanGame.hangman_animation(still_guessing, guessed)
+                    self.lives -= 1
+                    self.hangman_animation(still_guessing, guessed)
                     print("Oopsies! {} is not in the word. Try again".format(guess))
                     print(word_state)
                     guessed_letters.append(guess)
-                    if HangmanGame.lives == 0:
+                    if self.lives == 0:
                         still_guessing = False
 
                 else:
@@ -196,12 +196,12 @@ class HangmanGame():
 
         if guessed:
             print("Bingo! You guessed the word. \n")
-            HangmanGame.hangman_animation(still_guessing, guessed)
+            self.hangman_animation(still_guessing, guessed)
         else:
             print("Unlucky. You ran out of lives. The word was {} \n".format(guessword))
-            HangmanGame.hangman_animation(still_guessing, guessed)
+            self.hangman_animation(still_guessing, guessed)
 
-        HangmanGame.lives = 6
+        self.lives = 6
         HangmanMain.Menu()
 
 class HangmanMain():
@@ -212,7 +212,7 @@ class HangmanMain():
               "3 > Quit \n"
               )
 
-        valid_inputs = {1: HangmanMain.Hangman,
+        valid_inputs = {1: self.Hangman,
                         2: library.add_words,
                         3: quit
                         }
